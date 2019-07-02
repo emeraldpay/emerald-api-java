@@ -20,16 +20,19 @@ public enum Chain {
     UNSPECIFIED(0, "UNSPECIFIED", "Unknown"),
 
     BITCOIN(1, "BTC", "Bitcoin"),
-    GRIN(10, "GRIN", "Grin"),
+    GRIN(2, "GRIN", "Grin"),
 
     // Networks with tokens
-    ETHEREUM(20, "ETH", "Ethereum"),
-    ETHEREUM_CLASSIC(21, "ETC", "Ethereum Classic"),
+    ETHEREUM(100, "ETH", "Ethereum"),
+    ETHEREUM_CLASSIC(101, "ETC", "Ethereum Classic"),
 
-    LIGHTNING(101, "BTC_LN", "Bitcoin Lightning"),
+    LIGHTNING(1001, "BTC_LN", "Bitcoin Lightning"),
 
     // Testnets
-    MORDEN(1001, "MORDEN", "Morden Testnet");
+    TESTNET_MORDEN(10001, "MORDEN", "Morden Testnet"),
+    TESTNET_KOVAN(10002, "KOVAN", "Kovan Testnet"),
+    TESTNET_BITCOIN(10003, "TESTNET_BITCOIN", "Bitcoin Testnet"),
+    TESTNET_FLOONET(10004, "FLOONET", "Floonet Testnet");
 
     private final int id;
     private final String code;
