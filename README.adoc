@@ -6,7 +6,7 @@ image:https://img.shields.io/gitter/room/etcdev-public/Lobby.svg["Gitter", link=
 
 Java stubs for public Emerald GRPC APIs.
 
-Latest version of the library: 0.1
+Latest version of the library: 0.2
 
 == Usage
 
@@ -23,7 +23,7 @@ Latest version of the library: 0.1
 <dependency>
   <groupId>io.emeraldpay</groupId>
   <artifactId>emerald-grpc</artifactId>
-  <version>0.1</version>
+  <version>0.2</version>
 </dependency>
 ```
 
@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-    compile 'io.emeraldpay:emerald-grpc:0.1'
+    compile 'io.emeraldpay:emerald-grpc:0.2'
 }
 ```
 
