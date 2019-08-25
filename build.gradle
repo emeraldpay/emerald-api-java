@@ -20,7 +20,7 @@ apply plugin: 'com.google.protobuf'
 apply plugin: 'com.jfrog.bintray'
 
 group = 'io.emeraldpay'
-version = '0.5'
+version = '0.6.0-0.2'
 
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
@@ -45,7 +45,9 @@ dependencies {
     api "io.grpc:grpc-stub:${grpcVersion}"
     implementation "io.grpc:grpc-netty:${grpcVersion}"
     implementation "io.netty:netty-tcnative-boringssl-static:2.0.22.Final"
-    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    implementation "javax.annotation:javax.annotation-api:1.3.2"
+    implementation "com.salesforce.servicelibs:reactor-grpc:${reactiveGrpcVersion}"
+    api "com.salesforce.servicelibs:reactor-grpc-stub:${reactiveGrpcVersion}"
 
 
     testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
@@ -57,9 +59,13 @@ protobuf {
     protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }
     plugins {
         grpc { artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}" }
+        reactor {  artifact = "com.salesforce.servicelibs:reactor-grpc:${reactiveGrpcVersion}:jdk8@jar" }
     }
     generateProtoTasks {
-        all()*.plugins { grpc {} }
+        all()*.plugins {
+            grpc {}
+            reactor {}
+        }
     }
 }
 
@@ -87,9 +93,9 @@ def pomConfig = {
     }
 
     scm {
-        connection "scm:git:git://github.com/etcdevteam/emerald-grpc-java.git"
-        developerConnection "scm:git:git://github.com/etcdevteam/emerald-grpc-java.git"
-        url "https://github.com/etcdevteam/emerald-grpc-java"
+        connection "scm:git:git://github.com/emeraldpay/emerald-java-client.git"
+        developerConnection "scm:git:git://github.com/emeraldpay/emerald-java-client.git"
+        url "https://github.com/emeraldpay/emerald-java-client"
     }
 }
 
@@ -146,7 +152,7 @@ bintray {
         repo = 'emerald-grpc'
         name = project.name
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/etcdevteam/emerald-grpc-java.git'
+        vcsUrl = 'https://github.com/emeraldpay/emerald-java-client.git'
         labels = ['ethereum', 'bitcoin', 'blockchain', 'java-8', 'grpc']
         publicDownloadNumbers = true
 
