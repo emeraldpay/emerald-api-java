@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
     }
 }
 
@@ -20,7 +20,7 @@ apply plugin: 'com.google.protobuf'
 apply plugin: 'com.jfrog.bintray'
 
 group = 'io.emeraldpay'
-version = '0.6.0-0.2'
+version = '0.6.0-0.3-SNAPSHOT'
 
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
@@ -35,7 +35,7 @@ repositories {
 sourceSets {
     main {
         proto {
-            srcDir '../emerald-grpc/proto'
+            srcDir '../api-definitions/proto'
         }
     }
 }
