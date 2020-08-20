@@ -55,6 +55,10 @@ dependencies {
     testImplementation "io.grpc:grpc-testing:${grpcVersion}"
 }
 
+test {
+    useJUnitPlatform()
+}
+
 protobuf {
     protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }
     plugins {

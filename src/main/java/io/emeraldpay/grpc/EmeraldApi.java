@@ -33,13 +33,33 @@ public class EmeraldApi {
         private InetAddress host;
         private Integer port;
 
+        /**
+         * Set target address as a host and port pair
+         *
+         * @param host remote host
+         * @param port remote port
+         * @return builder
+         * @throws UnknownHostException for invalid host name
+         */
         public Builder connectTo(String host, int port) throws UnknownHostException {
             this.connectTo(InetAddress.getByName(host), port);
             return this;
         }
 
+        /**
+         * Set target address, as a host only or as a host:port pair
+         *
+         * @param host remote address
+         * @return builder
+         * @throws UnknownHostException for invalid host name
+         */
         public Builder connectTo(String host) throws UnknownHostException {
-            this.connectTo(InetAddress.getByName(host));
+            if (host.indexOf(":") > 0) {
+                String[] split = host.split(":");
+                this.connectTo(split[0], Integer.parseInt(split[1]));
+            } else {
+                this.connectTo(InetAddress.getByName(host));
+            }
             return this;
         }
 
