@@ -23,7 +23,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'jacoco'
 
 group = 'io.emeraldpay'
-version = '0.7.0-SNAPSHOT'
+version = '0.7.0'
 
 targetCompatibility = '11'
 sourceCompatibility = '11'
@@ -97,7 +97,7 @@ def pomConfig = {
         developer {
             id "splix"
             name "Igor Artamonov"
-            email "igor@artamonov.ru"
+            email "igor@artamonov.email"
         }
     }
 
@@ -139,7 +139,7 @@ publishing {
             version project.version
             pom.withXml {
                 def root = asNode()
-                root.appendNode('name', 'Emerald gRPC Java Stubs')
+                root.appendNode('name', 'Emerald API')
                 root.children().last() + pomConfig
             }
         }
@@ -158,7 +158,7 @@ bintray {
 
     pkg {
         userOrg = 'emerald'
-        repo = 'emerald-grpc'
+        repo = 'emerald-api'
         name = project.name
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/emeraldpay/emerald-java-client.git'
@@ -167,7 +167,7 @@ bintray {
 
         version {
             name = project.version
-            description = 'Emerald gRPC Java Stubs'
+            description = 'Emerald API (gRPC Stubs for Java)'
             released  = new Date()
             vcsTag = project.version
 

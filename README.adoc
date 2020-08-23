@@ -1,4 +1,6 @@
-= Emerald gRPC Java Stubs
+= Emerald API for Java
+:lib-version: 0.7.0
+:lib-version-dev: 0.8.0-SNAPSHOT
 
 image:https://github.com/emeraldpay/emerald-java-client/workflows/Tests/badge.svg["Unit Tests"]
 image:https://api.bintray.com/packages/emerald/emerald-grpc/emerald-grpc/images/download.svg[link="https://bintray.com/emerald/emerald-grpc/emerald-grpc/"]
@@ -6,42 +8,22 @@ image:https://img.shields.io/github/license/emeraldpay/emerald-java-client.svg?m
 image:https://badges.gitter.im/emeraldpay/community.svg[link="https://gitter.im/emeraldpay/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"]
 image:https://codecov.io/gh/emeraldpay/emerald-java-client/branch/master/graph/badge.svg["Coverage",link="https://codecov.io/gh/emeraldpay/emerald-java-client"]
 
-
-
 Java stubs for public Emerald gRPC APIs.
 
 == Usage
 
-=== Maven
+=== Dependency
 
-[source,xml]
-----
-<repositories>
-    <repository>
-      <id>etherjar</id>
-      <url>https://dl.bintray.com/emerald/emerald-grpc</url>
-    </repository>
-</repositories>
-
-<dependency>
-  <groupId>io.emeraldpay</groupId>
-  <artifactId>emerald-grpc</artifactId>
-  <version>0.6.0-0.2</version>
-</dependency>
-----
-
-=== Gradle
-
-[source,groovy]
+[source,groovy,subs="attributes"]
 ----
 repositories {
     maven {
-        url  "https://dl.bintray.com/emerald/emerald-grpc"
+        url  "https://dl.bintray.com/emerald/emerald-api"
     }
 }
 
 dependencies {
-    compile 'io.emeraldpay:emerald-grpc:0.6.0-0.2'
+    compile 'io.emeraldpay:emerald-grpc:{lib-version}'
 }
 ----
 
