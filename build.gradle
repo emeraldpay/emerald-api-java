@@ -35,7 +35,7 @@ repositories {
 sourceSets {
     main {
         proto {
-            srcDir '../api-definitions/proto'
+            srcDir 'api-definitions/proto'
         }
     }
 }
