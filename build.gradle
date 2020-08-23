@@ -23,7 +23,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'jacoco'
 
 group = 'io.emeraldpay'
-version = '0.7.0'
+version = '0.8.0-SNAPSHOT'
 
 targetCompatibility = '11'
 sourceCompatibility = '11'
