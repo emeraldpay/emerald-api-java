@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    compile 'io.emeraldpay:emerald-grpc:{lib-version}'
+    implementation 'io.emeraldpay:emerald-api:{lib-version}'
 }
 ----
 
