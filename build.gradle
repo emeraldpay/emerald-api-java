@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
     }
 }
 
@@ -169,7 +169,7 @@ bintray {
             name = project.version
             description = 'Emerald API (gRPC Stubs for Java)'
             released  = new Date()
-            vcsTag = project.version
+            vcsTag = 'v' + project.version
 
             gpg {
                 sign = true
