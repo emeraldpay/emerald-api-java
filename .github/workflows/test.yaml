@@ -37,14 +37,13 @@ jobs:
 
   # Make sure it works with all standard JVMs on main OSes
   platform-test:
-    name: Java ${{ matrix.java }} on ${{ matrix.os }}
+    name: Java ${{ matrix.java }}
     continue-on-error: ${{ matrix.java != '11' }}
     strategy:
       matrix:
         java: ["11", "12", "13", "14"]
-        os: ["windows-latest", "macos-latest", "ubuntu-latest"]
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
