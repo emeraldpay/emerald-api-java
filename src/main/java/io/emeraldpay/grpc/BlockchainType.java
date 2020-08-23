@@ -9,6 +9,9 @@ public enum BlockchainType {
                 || chain == Chain.ETHEREUM_CLASSIC
                 || chain == Chain.TESTNET_KOVAN
                 || chain == Chain.TESTNET_MORDEN
+                || chain == Chain.TESTNET_GOERLI
+                || chain == Chain.TESTNET_RINKEBY
+                || chain == Chain.TESTNET_ROPSTEN
         ) {
             return BlockchainType.ETHEREUM;
         }

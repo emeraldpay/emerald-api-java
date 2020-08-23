@@ -32,7 +32,10 @@ public enum Chain {
     TESTNET_MORDEN(10001, "MORDEN", "Morden Testnet"),
     TESTNET_KOVAN(10002, "KOVAN", "Kovan Testnet"),
     TESTNET_BITCOIN(10003, "TESTNET_BITCOIN", "Bitcoin Testnet"),
-    TESTNET_FLOONET(10004, "FLOONET", "Floonet Testnet");
+    TESTNET_FLOONET(10004, "FLOONET", "Floonet Testnet"),
+    TESTNET_GOERLI(10005, "GOERLI", "Goerli Testnet"),
+    TESTNET_ROPSTEN(10006, "ROPSTEN", "Ropsten Testnet"),
+    TESTNET_RINKEBY(10007, "RINKEBY", "Rinkeby Testnet");
 
     private final int id;
     private final String code;
