@@ -36,11 +36,7 @@ public class BalanceRequestBuilder {
     public BlockchainOuterClass.BalanceRequest build() {
         return BlockchainOuterClass.BalanceRequest.newBuilder()
                 .setAddress(
-                        Common.AnyAddress.newBuilder()
-                                .setAddressSingle(
-                                        Common.SingleAddress.newBuilder()
-                                                .setAddress(address.toString())
-                                )
+                        Addresses.singleAddressAsAny(address)
                 )
                 .setAsset(
                         Common.Asset.newBuilder()
