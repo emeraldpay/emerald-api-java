@@ -23,10 +23,12 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'jacoco'
 
 group = 'io.emeraldpay'
-version = '0.8.0'
+version = '0.9.0'
 
-targetCompatibility = '11'
-sourceCompatibility = '11'
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 
 repositories {
     mavenLocal()
@@ -68,7 +70,7 @@ protobuf {
     protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }
     plugins {
         grpc { artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}" }
-        reactor {  artifact = "com.salesforce.servicelibs:reactor-grpc:${reactiveGrpcVersion}:jdk8@jar" }
+        reactor {  artifact = "com.salesforce.servicelibs:reactor-grpc:${reactiveGrpcVersion}" }
     }
     generateProtoTasks {
         all()*.plugins {
