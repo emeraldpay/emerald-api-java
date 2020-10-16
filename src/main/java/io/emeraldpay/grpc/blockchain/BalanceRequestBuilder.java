@@ -10,6 +10,7 @@ public class BalanceRequestBuilder {
     private String address;
     private Chain chain;
     private String asset;
+    private boolean includeUtxo = false;
 
     public BalanceRequestBuilder address(String address) {
         this.address = address;
@@ -33,6 +34,19 @@ public class BalanceRequestBuilder {
         throw new IllegalStateException("No default asset for " + chain);
     }
 
+    public BalanceRequestBuilder includeUtxo(boolean value) {
+        this.includeUtxo = value;
+        return this;
+    }
+
+    public BalanceRequestBuilder includeUtxo() {
+        return this.includeUtxo(true);
+    }
+
+    public BalanceRequestBuilder excludeUtxo() {
+        return this.includeUtxo(false);
+    }
+
     public BlockchainOuterClass.BalanceRequest build() {
         return BlockchainOuterClass.BalanceRequest.newBuilder()
                 .setAddress(
@@ -43,6 +57,7 @@ public class BalanceRequestBuilder {
                                 .setChain(Common.ChainRef.forNumber(chain.getId()))
                                 .setCode(asset)
                 )
+                .setIncludeUtxo(includeUtxo)
                 .build();
     }
 
