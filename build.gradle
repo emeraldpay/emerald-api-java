@@ -8,19 +8,20 @@ buildscript {
     }
     dependencies {
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'java-library'
-apply plugin: 'groovy'
-apply plugin: 'idea'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-apply plugin: 'com.google.protobuf'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'jacoco'
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'groovy'
+    id 'idea'
+    id 'maven'
+    id 'maven-publish'
+    id 'com.google.protobuf' version "0.8.8"
+    id 'jacoco'
+    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.1.1"
+}
 
 group = 'io.emeraldpay'
 version = '0.9.2'
@@ -35,6 +36,7 @@ repositories {
     mavenCentral()
     maven { url "http://repo.spring.io/snapshot" }
     maven { url "http://repo.spring.io/milestone" }
+    maven { url "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven" }
 }
 
 sourceSets {
@@ -81,33 +83,10 @@ protobuf {
 }
 
 afterEvaluate {
-    bintrayUpload.dependsOn(compileJava)
-    bintrayUpload.dependsOn(generateProto)
+    publish.dependsOn(compileJava)
+    publish.dependsOn(generateProto)
     install.dependsOn(generateProto)
     generateProto.dependsOn(clean)
-}
-
-def pomConfig = {
-    licenses {
-        license {
-            name "The Apache Software License, Version 2.0"
-            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-            distribution "repo"
-        }
-    }
-    developers {
-        developer {
-            id "splix"
-            name "Igor Artamonov"
-            email "igor@artamonov.email"
-        }
-    }
-
-    scm {
-        connection "scm:git:git://github.com/emeraldpay/emerald-java-client.git"
-        developerConnection "scm:git:git://github.com/emeraldpay/emerald-java-client.git"
-        url "https://github.com/emeraldpay/emerald-java-client"
-    }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -126,6 +105,12 @@ artifacts {
 }
 
 publishing {
+    repositories {
+        maven {
+            url "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven"
+        }
+    }
+
     publications {
         EmeraldPublication(MavenPublication) {
             from components.java
@@ -139,42 +124,26 @@ publishing {
             groupId project.group
             artifactId project.name
             version project.version
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('name', 'Emerald API')
-                root.children().last() + pomConfig
-            }
-        }
-    }
-}
-
-bintray {
-    user = System.getProperty('bintrayUser') ? System.getProperty('bintrayUser') : System.getenv('BINTRAY_USER')
-    key = System.getProperty('bintrayApiKey') ? System.getProperty('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-
-    publications = ['EmeraldPublication']
-
-    dryRun=false
-    publish=true
-    override=true
-
-    pkg {
-        userOrg = 'emerald'
-        repo = 'emerald-api'
-        name = project.name
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/emeraldpay/emerald-java-client.git'
-        labels = ['ethereum', 'bitcoin', 'blockchain', 'emerald']
-        publicDownloadNumbers = true
-
-        version {
-            name = project.version
-            description = 'Emerald API (gRPC Stubs for Java)'
-            released  = new Date()
-            vcsTag = 'v' + project.version
-
-            gpg {
-                sign = true
+            pom {
+                name = 'Emerald API'
+                description = 'Emerald API Client (gRPC Stubs for Java)'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = "splix"
+                        name = "Igor Artamonov"
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/emeraldpay/emerald-java-client.git'
+                    developerConnection = 'scm:git:git@github.com:emeraldpay/emerald-java-client.git'
+                    url = 'https://github.com/emeraldpay/emerald-java-client'
+                }
             }
         }
     }
