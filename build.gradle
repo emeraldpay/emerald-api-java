@@ -20,7 +20,11 @@ plugins {
     id 'maven-publish'
     id 'com.google.protobuf' version "0.8.8"
     id 'jacoco'
-    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.1.1"
+    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.1.1" apply false
+}
+
+if (System.getenv("ENABLE_GCP") == "true") {
+    apply plugin: "com.google.cloud.artifactregistry.gradle-plugin"
 }
 
 group = 'io.emeraldpay'
@@ -36,7 +40,6 @@ repositories {
     mavenCentral()
     maven { url "http://repo.spring.io/snapshot" }
     maven { url "http://repo.spring.io/milestone" }
-    maven { url "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven" }
 }
 
 sourceSets {
