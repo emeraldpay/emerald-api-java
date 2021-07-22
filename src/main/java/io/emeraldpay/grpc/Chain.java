@@ -25,8 +25,11 @@ public enum Chain {
     // Networks with tokens
     ETHEREUM(100, "ETH", "Ethereum"),
     ETHEREUM_CLASSIC(101, "ETC", "Ethereum Classic"),
+    FANTOM(102, "FTM", "Fantom"),
 
     LIGHTNING(1001, "BTC_LN", "Bitcoin Lightning"),
+    MATIC(1002, "MATIC", "Polygon Matic"),
+    RSK(1003, "RSK", "Bitcoin RSK"),
 
     // Testnets
     TESTNET_MORDEN(10001, "MORDEN", "Morden Testnet"),
