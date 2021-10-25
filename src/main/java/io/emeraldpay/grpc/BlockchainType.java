@@ -10,6 +10,13 @@ public enum BlockchainType {
                 || chain == Chain.MATIC
                 || chain == Chain.FANTOM
                 || chain == Chain.RSK
+                || chain == Chain.BSC
+                || chain == Chain.XDAI
+                || chain == Chain.HECO
+                || chain == Chain.OPTIMISM
+                || chain == Chain.MOONRIVER
+                || chain == Chain.AVALANCHE
+                || chain == Chain.ARBITRUM
                 || chain == Chain.TESTNET_KOVAN
                 || chain == Chain.TESTNET_MORDEN
                 || chain == Chain.TESTNET_GOERLI

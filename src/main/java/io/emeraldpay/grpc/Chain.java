@@ -30,6 +30,13 @@ public enum Chain {
     //LIGHTNING(1001, "BTC_LN", "Bitcoin Lightning"),
     MATIC(1002, "MATIC", "Polygon Matic"),
     RSK(1003, "RSK", "Bitcoin RSK"),
+    BSC(56, "BSC", "Binance Smart Chain"),
+    XDAI(100, "XDAI", "XDAI"),
+    HECO(128, "HECO", "HECO"),
+    OPTIMISM(10, "OPTIMISM", "Optimism"),
+    MOONRIVER(1285, "MOONRIVER", "Moonriver"),
+    AVALANCHE(43114, "AVALANCHE", "Avalanche"),
+    ARBITRUM(42161, "ARBITRUM", "Arbitrum"),
 
     // Testnets
     TESTNET_MORDEN(10001, "MORDEN", "Morden Testnet"),
