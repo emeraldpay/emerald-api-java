@@ -26,12 +26,12 @@ public enum Chain {
     ETHEREUM(100, "ETH", "Ethereum"),
     ETHEREUM_CLASSIC(101, "ETC", "Ethereum Classic"),
     FANTOM(102, "FTM", "Fantom"),
+    BSC(103, "BSC", "Binance Smart Chain"),
+    AVALANCHE(104, "AVA", "Avalanche C-Chain"),
 
     //LIGHTNING(1001, "BTC_LN", "Bitcoin Lightning"),
     MATIC(1002, "MATIC", "Polygon Matic"),
     RSK(1003, "RSK", "Bitcoin RSK"),
-    BSC(1004, "BSC", "Binance Smart Chain"),
-    AVALANCHE(1005, "AVA", "Avalanche C-Chain"),
 
     // Testnets
     TESTNET_MORDEN(10001, "MORDEN", "Morden Testnet"),
@@ -43,7 +43,7 @@ public enum Chain {
     TESTNET_RINKEBY(10007, "RINKEBY", "Rinkeby Testnet"),
     TESTNET_MUMBAI(10008, "MUMBAI", "Mumbai Testnet"),
     TESTNET_BSC(10009, "BSCTEST", "Binance Smart Chain Testnet"),
-    TESTNET_FUJI(1005, "FUJI", "Avalanche Fuji C-Chain");
+    TESTNET_FUJI(10010, "FUJI", "Avalanche Fuji C-Chain");
 
     private final int id;
     private final String code;
