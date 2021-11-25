@@ -30,6 +30,8 @@ public enum Chain {
     //LIGHTNING(1001, "BTC_LN", "Bitcoin Lightning"),
     MATIC(1002, "MATIC", "Polygon Matic"),
     RSK(1003, "RSK", "Bitcoin RSK"),
+    BSC(1004, "BSC", "Binance Smart Chain"),
+    AVALANCHE(1005, "AVA", "Avalanche C-Chain"),
 
     // Testnets
     TESTNET_MORDEN(10001, "MORDEN", "Morden Testnet"),
@@ -38,7 +40,10 @@ public enum Chain {
     // TESTNET_FLOONET(10004, "FLOONET", "Floonet Testnet"),
     TESTNET_GOERLI(10005, "GOERLI", "Goerli Testnet"),
     TESTNET_ROPSTEN(10006, "ROPSTEN", "Ropsten Testnet"),
-    TESTNET_RINKEBY(10007, "RINKEBY", "Rinkeby Testnet");
+    TESTNET_RINKEBY(10007, "RINKEBY", "Rinkeby Testnet"),
+    TESTNET_MUMBAI(10008, "MUMBAI", "Mumbai Testnet"),
+    TESTNET_BSC(10009, "BSCTEST", "Binance Smart Chain Testnet"),
+    TESTNET_FUJI(1005, "FUJI", "Avalanche Fuji C-Chain");
 
     private final int id;
     private final String code;
