@@ -6,4 +6,7 @@ public class BlockchainRequest {
         return new BalanceRequestBuilder();
     }
 
+    public static EstimateFeeRequestBuilder estimateFee() {
+        return new EstimateFeeRequestBuilder();
+    }
 }
