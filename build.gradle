@@ -28,7 +28,7 @@ if (System.getenv("ENABLE_GCP") == "true") {
 }
 
 group = 'io.emeraldpay'
-version = '0.10.0'
+version = '0.11.0-SNAPSHOT'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -40,6 +40,7 @@ repositories {
     mavenCentral()
     maven { url "http://repo.spring.io/snapshot" }
     maven { url "http://repo.spring.io/milestone" }
+    maven { url "https://maven.emrld.io" }
 }
 
 sourceSets {
@@ -59,6 +60,7 @@ dependencies {
     implementation "com.salesforce.servicelibs:reactor-grpc:${reactiveGrpcVersion}"
     api "com.salesforce.servicelibs:reactor-grpc-stub:${reactiveGrpcVersion}"
 
+    implementation 'io.emeraldpay.etherjar:etherjar-domain:0.11.0'
 
     testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
     testImplementation "org.spockframework:spock-core:${spockVersion}"

@@ -2,6 +2,7 @@ package io.emeraldpay.grpc.blockchain;
 
 import io.emeraldpay.api.proto.BlockchainOuterClass;
 import io.emeraldpay.api.proto.Common;
+import io.emeraldpay.etherjar.domain.Address;
 import io.emeraldpay.grpc.BlockchainType;
 import io.emeraldpay.grpc.Chain;
 
@@ -14,6 +15,14 @@ public class BalanceRequestBuilder {
 
     public BalanceRequestBuilder address(String address) {
         this.address = address;
+        return this;
+    }
+
+    public BalanceRequestBuilder address(Address address) {
+        this.address = address.toHex();
+        if (chain == null) {
+            chain = Chain.ETHEREUM;
+        }
         return this;
     }
 
