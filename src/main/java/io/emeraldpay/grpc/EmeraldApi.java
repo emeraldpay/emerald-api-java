@@ -2,11 +2,13 @@ package io.emeraldpay.grpc;
 
 import io.emeraldpay.api.proto.ReactorBlockchainGrpc;
 import io.grpc.Channel;
+import io.grpc.ManagedChannelBuilder;
 import io.grpc.netty.NettyChannelBuilder;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.function.Function;
 
 /**
  * Root of Emerald API service
@@ -32,6 +34,13 @@ public class EmeraldApi {
     public static class Builder {
         private InetAddress host;
         private Integer port;
+
+        /**
+         * Default Netty config allows messages up to 4Mb, but in practice Ethereum RPC responses may be larger. Here it allows up to 32Mb by default.
+         */
+        private Integer maxMessageSize = 32 * 1024 * 1024;
+
+        private Function<NettyChannelBuilder, ManagedChannelBuilder<?>> customChannel = null;
 
         /**
          * Set target address as a host and port pair
@@ -74,6 +83,28 @@ public class EmeraldApi {
             return this;
         }
 
+        /**
+         * St max inbound message size. Default is 32mb.
+         *
+         * @param value max message size. Set as null to use Netty default config
+         * @return builder
+         */
+        public Builder maxMessageSize(Integer value) {
+            this.maxMessageSize = value;
+            return this;
+        }
+
+        /**
+         * Customize Channel Builder by applying any custom options not covered by this Builder
+         *
+         * @param customChannel function that transforms NettyChannelBuilder prepared by builder before creating api from it
+         * @return builder
+         */
+        public Builder withChannelBuilder(Function<NettyChannelBuilder, ManagedChannelBuilder<?>> customChannel) {
+            this.customChannel = customChannel;
+            return this;
+        }
+
         protected void initDefaults() throws IOException {
             if (host == null) {
                 host = InetAddress.getByName("rpc.emeraldpay.dev");
@@ -87,13 +118,26 @@ public class EmeraldApi {
          * Build the API instance
          *
          * @return Emerald API instance
-         * @throws Exception if some of config params are invalid
+         * @throws Exception if some config params are invalid
          */
         public EmeraldApi build() throws Exception {
             initDefaults();
 
-            NettyChannelBuilder channelBuilder = NettyChannelBuilder.forAddress(host.getHostAddress(), port)
+            NettyChannelBuilder nettyChannelBuilder = NettyChannelBuilder
+                    .forAddress(host.getHostAddress(), port)
                     .usePlaintext();
+
+            if (maxMessageSize != null && maxMessageSize > 0) {
+                nettyChannelBuilder.maxInboundMessageSize(maxMessageSize);
+            }
+
+            ManagedChannelBuilder<?> channelBuilder;
+
+            if (customChannel != null) {
+                channelBuilder = customChannel.apply(nettyChannelBuilder);
+            } else {
+                channelBuilder = nettyChannelBuilder;
+            }
 
             return new EmeraldApi(channelBuilder.build());
         }

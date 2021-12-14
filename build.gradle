@@ -54,7 +54,7 @@ dependencies {
     api "io.grpc:grpc-protobuf:${grpcVersion}"
     api "io.grpc:grpc-stub:${grpcVersion}"
     implementation "io.grpc:grpc-netty:${grpcVersion}"
-    implementation "io.netty:netty-tcnative-boringssl-static:2.0.22.Final"
+    implementation "io.netty:netty-tcnative-boringssl-static:2.0.46.Final"
     implementation "javax.annotation:javax.annotation-api:1.3.2"
     implementation "com.salesforce.servicelibs:reactor-grpc:${reactiveGrpcVersion}"
     api "com.salesforce.servicelibs:reactor-grpc-stub:${reactiveGrpcVersion}"
