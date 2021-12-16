@@ -6,11 +6,13 @@ on:
     branches:
       - master
       - release/*
+      - ci/*
   # on a pull request
   pull_request:
     branches:
       - master
       - release/*
+      - ci/*
 
 jobs:
   # runs unit tests with default config, submits the coverage report
@@ -25,7 +27,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 8
+          java-version: 11
 
       - name: Check
         uses: eskatos/gradle-command-action@v1
@@ -48,7 +50,7 @@ jobs:
     continue-on-error: ${{ matrix.java != '11' && matrix.java != '8' }}
     strategy:
       matrix:
-        java: [ "8", "11", "12", "13", "14" ]
+        java: [ "8", "11", "12", "13", "14", "15", "16", "17" ]
 
     runs-on: ubuntu-latest
     steps:
