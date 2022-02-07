@@ -26,6 +26,7 @@ public enum Chain {
     ETHEREUM(100, "ETH", "Ethereum"),
     ETHEREUM_CLASSIC(101, "ETC", "Ethereum Classic"),
     FANTOM(102, "FTM", "Fantom"),
+    BSC(103, "BSC", "Binance Smart Chain"),
 
     //LIGHTNING(1001, "BTC_LN", "Bitcoin Lightning"),
     MATIC(1002, "MATIC", "Polygon Matic"),
