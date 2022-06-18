@@ -32,8 +32,9 @@ public class EmeraldApi {
     }
 
     public static class Builder {
-        private InetAddress host;
+        private String host;
         private Integer port;
+        private boolean usePlaintext = false;
 
         /**
          * Default Netty config allows messages up to 4Mb, but in practice Ethereum RPC responses may be larger. Here it allows up to 32Mb by default.
@@ -51,7 +52,8 @@ public class EmeraldApi {
          * @throws UnknownHostException for invalid host name
          */
         public Builder connectTo(String host, int port) throws UnknownHostException {
-            this.connectTo(InetAddress.getByName(host), port);
+            this.host = host;
+            this.port = port;
             return this;
         }
 
@@ -67,7 +69,7 @@ public class EmeraldApi {
                 String[] split = host.split(":");
                 this.connectTo(split[0], Integer.parseInt(split[1]));
             } else {
-                this.connectTo(InetAddress.getByName(host));
+                this.host = host;
             }
             return this;
         }
@@ -79,7 +81,12 @@ public class EmeraldApi {
         }
 
         public Builder connectTo(InetAddress host) {
-            this.host = host;
+            this.host = host.getHostAddress();
+            return this;
+        }
+
+        public Builder usePlaintext() {
+            this.usePlaintext = true;
             return this;
         }
 
@@ -107,7 +114,7 @@ public class EmeraldApi {
 
         protected void initDefaults() throws IOException {
             if (host == null) {
-                host = InetAddress.getByName("rpc.emeraldpay.dev");
+                host = "api.emeraldpay.dev";
             }
             if (port == null) {
                 port = 443;
@@ -124,8 +131,11 @@ public class EmeraldApi {
             initDefaults();
 
             NettyChannelBuilder nettyChannelBuilder = NettyChannelBuilder
-                    .forAddress(host.getHostAddress(), port)
-                    .usePlaintext();
+                    .forAddress(host, port);
+
+            if (port == 80 || usePlaintext) {
+                nettyChannelBuilder.usePlaintext();
+            }
 
             if (maxMessageSize != null && maxMessageSize > 0) {
                 nettyChannelBuilder.maxInboundMessageSize(maxMessageSize);
