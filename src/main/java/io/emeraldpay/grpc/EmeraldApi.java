@@ -27,6 +27,10 @@ public class EmeraldApi {
         return new Builder();
     }
 
+    public static Builder newDevelopmentBuilder() {
+        return new Builder().connectTo("api.emeraldpay.dev", 443);
+    }
+
     public ReactorBlockchainGrpc.ReactorBlockchainStub getBlockchainApi() {
         return blockchainStub;
     }
@@ -49,9 +53,8 @@ public class EmeraldApi {
          * @param host remote host
          * @param port remote port
          * @return builder
-         * @throws UnknownHostException for invalid host name
          */
-        public Builder connectTo(String host, int port) throws UnknownHostException {
+        public Builder connectTo(String host, int port) {
             this.host = host;
             this.port = port;
             return this;
@@ -62,9 +65,8 @@ public class EmeraldApi {
          *
          * @param host remote address
          * @return builder
-         * @throws UnknownHostException for invalid host name
          */
-        public Builder connectTo(String host) throws UnknownHostException {
+        public Builder connectTo(String host) {
             if (host.indexOf(":") > 0) {
                 String[] split = host.split(":");
                 this.connectTo(split[0], Integer.parseInt(split[1]));
@@ -75,9 +77,8 @@ public class EmeraldApi {
         }
 
         public Builder connectTo(InetAddress host, int port) {
-            this.connectTo(host);
             this.port = port;
-            return this;
+            return this.connectTo(host);
         }
 
         public Builder connectTo(InetAddress host) {
@@ -114,7 +115,7 @@ public class EmeraldApi {
 
         protected void initDefaults() throws IOException {
             if (host == null) {
-                host = "api.emeraldpay.dev";
+                host = "api.emrld.io";
             }
             if (port == null) {
                 port = 443;
