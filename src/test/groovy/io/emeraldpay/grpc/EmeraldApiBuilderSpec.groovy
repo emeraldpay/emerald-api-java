@@ -10,7 +10,7 @@ class EmeraldApiBuilderSpec extends Specification {
                 .connectTo("localhost:1234")
         then:
         act.port == 1234
-        act.host == InetAddress.getByName("localhost")
+        act.host == "localhost"
     }
 
     def "Use host if only provided"() {
@@ -19,6 +19,6 @@ class EmeraldApiBuilderSpec extends Specification {
                 .connectTo("google.com")
         then:
         act.port == null
-        act.host == InetAddress.getByName("google.com")
+        act.host == "google.com"
     }
 }
