@@ -34,7 +34,7 @@ public class BalanceRequestBuilder {
 
     public BalanceRequestBuilder asset(Chain chain) {
         BlockchainType type = BlockchainType.from(chain);
-        if (type == BlockchainType.ETHEREUM) {
+        if (type == BlockchainType.ETHEREUM || type == BlockchainType.ETHEREUM_POS) {
             return this.asset(chain, "ether");
         }
         if (type == BlockchainType.BITCOIN) {
