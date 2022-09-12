@@ -27,7 +27,7 @@ if (System.getenv("ENABLE_GCP") == "true") {
 }
 
 group = 'io.emeraldpay'
-version = '0.12-alpha.2'
+version = '0.12-alpha.3'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -53,6 +53,8 @@ sourceSets {
 dependencies {
     api "io.grpc:grpc-protobuf:${grpcVersion}"
     api "io.grpc:grpc-stub:${grpcVersion}"
+    api "io.projectreactor:reactor-core:${reactor}"
+    api "com.google.protobuf:protobuf-java:${protobufVersion}"
     implementation "io.grpc:grpc-netty:${grpcVersion}"
     implementation "io.netty:netty-tcnative-boringssl-static:2.0.46.Final"
     implementation "javax.annotation:javax.annotation-api:1.3.2"
