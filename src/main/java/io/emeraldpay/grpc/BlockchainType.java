@@ -6,8 +6,12 @@ public enum BlockchainType {
     ETHEREUM_POS;
 
     public static BlockchainType from(Chain chain) {
-        if (chain == Chain.ETHEREUM
-                || chain == Chain.ETHEREUM_CLASSIC
+        if (chain == Chain.TESTNET_ROPSTEN
+                || chain == Chain.TESTNET_GOERLI
+                || chain == Chain.ETHEREUM) {
+            return BlockchainType.ETHEREUM_POS;
+        }
+        if (chain == Chain.ETHEREUM_CLASSIC
                 || chain == Chain.MATIC
                 || chain == Chain.FANTOM
                 || chain == Chain.RSK
@@ -16,10 +20,6 @@ public enum BlockchainType {
                 || chain == Chain.TESTNET_RINKEBY
         ) {
             return BlockchainType.ETHEREUM;
-        }
-
-        if (chain == Chain.TESTNET_ROPSTEN || chain == Chain.TESTNET_GOERLI) {
-            return BlockchainType.ETHEREUM_POS;
         }
 
         if (chain == Chain.BITCOIN
