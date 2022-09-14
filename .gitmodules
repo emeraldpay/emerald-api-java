@@ -1,4 +1,4 @@
 [submodule "api-definitions"]
 	path = api-definitions
 	url = https://github.com/p2p-org/emerald-grpc.git
-	branch = native_subscribe_filter
+	branch = native_subscribe_sign
