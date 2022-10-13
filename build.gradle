@@ -17,7 +17,7 @@ plugins {
     id 'groovy'
     id 'idea'
     id 'maven-publish'
-    id 'com.google.protobuf' version "0.8.18"
+    id 'com.google.protobuf' version "0.9.1"
     id 'jacoco'
     id "com.google.cloud.artifactregistry.gradle-plugin" version "2.1.4" apply false
 }
@@ -75,9 +75,17 @@ test {
 }
 
 protobuf {
-    protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protocVersion}"
+        if (osdetector.os == "osx") {
+            artifact += ":osx-x86_64"
+        }
+    }
+
     plugins {
-        grpc { artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}" }
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
         reactor {  artifact = "com.salesforce.servicelibs:reactor-grpc:${reactiveGrpcVersion}" }
     }
     generateProtoTasks {
