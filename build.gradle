@@ -27,7 +27,7 @@ if (System.getenv("ENABLE_GCP") == "true") {
 }
 
 group = 'io.emeraldpay'
-version = '0.12-alpha.2'
+version = '0.12-alpha.3'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
