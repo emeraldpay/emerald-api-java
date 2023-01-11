@@ -1,4 +1,4 @@
-package io.emeraldpay.grpc.blockchain;
+package io.emeraldpay.api.blockchain;
 
 public class BlockchainRequest {
 

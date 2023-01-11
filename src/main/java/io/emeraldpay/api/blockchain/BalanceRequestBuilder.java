@@ -1,10 +1,10 @@
-package io.emeraldpay.grpc.blockchain;
+package io.emeraldpay.api.blockchain;
 
+import io.emeraldpay.api.Chain;
 import io.emeraldpay.api.proto.BlockchainOuterClass;
 import io.emeraldpay.api.proto.Common;
 import io.emeraldpay.etherjar.domain.Address;
-import io.emeraldpay.grpc.BlockchainType;
-import io.emeraldpay.grpc.Chain;
+import io.emeraldpay.api.BlockchainType;
 
 public class BalanceRequestBuilder {
 

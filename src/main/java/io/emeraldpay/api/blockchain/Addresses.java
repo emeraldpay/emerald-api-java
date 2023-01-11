@@ -1,4 +1,4 @@
-package io.emeraldpay.grpc.blockchain;
+package io.emeraldpay.api.blockchain;
 
 import io.emeraldpay.api.proto.Common;
 

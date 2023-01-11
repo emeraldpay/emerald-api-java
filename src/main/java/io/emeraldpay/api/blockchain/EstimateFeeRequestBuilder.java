@@ -1,7 +1,7 @@
-package io.emeraldpay.grpc.blockchain;
+package io.emeraldpay.api.blockchain;
 
+import io.emeraldpay.api.Chain;
 import io.emeraldpay.api.proto.BlockchainOuterClass;
-import io.emeraldpay.grpc.Chain;
 
 public class EstimateFeeRequestBuilder {
 

@@ -1,38 +1,42 @@
-package io.emeraldpay.grpc;
+package io.emeraldpay.api;
 
-import io.emeraldpay.api.proto.ReactorBlockchainGrpc;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.netty.NettyChannelBuilder;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.function.Function;
 
 /**
- * Root of Emerald API service
+ * A connection configuration to access Emerald APIs
  */
-public class EmeraldApi {
+public class EmeraldConnection {
 
-    private final ReactorBlockchainGrpc.ReactorBlockchainStub blockchainStub;
+    private final Channel channel;
 
-    private Channel channel;
-
-    private EmeraldApi(Channel channel) {
-        blockchainStub = ReactorBlockchainGrpc.newReactorStub(channel);
+    private EmeraldConnection(Channel channel) {
+        this.channel = channel;
     }
 
+    /**
+     *
+     * @return a default connection
+     */
+    public static EmeraldConnection newDefault() {
+        return newBuilder().build();
+    }
+
+    /**
+     * @return a default configuration builder
+     * @see #newDefault()
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    public static Builder newDevelopmentBuilder() {
-        return new Builder().connectTo("api.emeraldpay.dev", 443);
-    }
-
-    public ReactorBlockchainGrpc.ReactorBlockchainStub getBlockchainApi() {
-        return blockchainStub;
+    public Channel getChannel() {
+        return channel;
     }
 
     public static class Builder {
@@ -113,7 +117,7 @@ public class EmeraldApi {
             return this;
         }
 
-        protected void initDefaults() throws IOException {
+        protected void initDefaults() {
             if (host == null) {
                 host = "api.emrld.io";
             }
@@ -126,9 +130,8 @@ public class EmeraldApi {
          * Build the API instance
          *
          * @return Emerald API instance
-         * @throws Exception if some config params are invalid
          */
-        public EmeraldApi build() throws Exception {
+        public EmeraldConnection build() {
             initDefaults();
 
             NettyChannelBuilder nettyChannelBuilder = NettyChannelBuilder
@@ -150,7 +153,7 @@ public class EmeraldApi {
                 channelBuilder = nettyChannelBuilder;
             }
 
-            return new EmeraldApi(channelBuilder.build());
+            return new EmeraldConnection(channelBuilder.build());
         }
 
 

@@ -1,4 +1,4 @@
-package io.emeraldpay.grpc;
+package io.emeraldpay.api;
 
 public enum BlockchainType {
     BITCOIN,

@@ -1,12 +1,13 @@
-package io.emeraldpay.grpc
+package io.emeraldpay.api
+
 
 import spock.lang.Specification
 
-class EmeraldApiBuilderSpec extends Specification {
+class EmeraldConnectionBuilderSpec extends Specification {
 
     def "Parse host with port"() {
         when:
-        def act = EmeraldApi.newBuilder()
+        def act = EmeraldConnection.newBuilder()
                 .connectTo("localhost:1234")
         then:
         act.port == 1234
@@ -15,7 +16,7 @@ class EmeraldApiBuilderSpec extends Specification {
 
     def "Use host if only provided"() {
         when:
-        def act = EmeraldApi.newBuilder()
+        def act = EmeraldConnection.newBuilder()
                 .connectTo("google.com")
         then:
         act.port == null

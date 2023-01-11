@@ -1,4 +1,5 @@
-package io.emeraldpay.grpc
+package io.emeraldpay.api
+
 
 import spock.lang.Specification
 
