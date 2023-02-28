@@ -1,12 +1,10 @@
 package io.emeraldpay.api;
 
-import io.grpc.Channel;
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.netty.NettyChannelBuilder;
+import io.grpc.*;
+import io.grpc.netty.*;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.function.Function;
+import java.net.*;
+import java.util.function.*;
 
 /**
  * A connection configuration to access Emerald APIs
@@ -43,6 +41,7 @@ public class EmeraldConnection {
         private String host;
         private Integer port;
         private boolean usePlaintext = false;
+        private boolean useLoadBalancing = true;
 
         /**
          * Default Netty config allows messages up to 4Mb, but in practice Ethereum RPC responses may be larger. Here it allows up to 32Mb by default.
@@ -92,6 +91,11 @@ public class EmeraldConnection {
 
         public Builder usePlaintext() {
             this.usePlaintext = true;
+            return this;
+        }
+
+        public Builder disableLoadBalancing() {
+            this.useLoadBalancing = false;
             return this;
         }
 
@@ -151,6 +155,10 @@ public class EmeraldConnection {
                 channelBuilder = customChannel.apply(nettyChannelBuilder);
             } else {
                 channelBuilder = nettyChannelBuilder;
+            }
+
+            if (useLoadBalancing) {
+                channelBuilder.defaultLoadBalancingPolicy("round_robin");
             }
 
             return new EmeraldConnection(channelBuilder.build());
