@@ -5,7 +5,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.18'
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.9.2'
     }
 }
 
@@ -15,7 +15,7 @@ plugins {
     id 'groovy'
     id 'idea'
     id 'maven-publish'
-    id 'com.google.protobuf' version "0.8.18"
+    id 'com.google.protobuf' version "0.9.2"
     id 'jacoco'
     id "com.google.cloud.artifactregistry.gradle-plugin" version "2.1.4" apply false
 }
@@ -25,7 +25,7 @@ if (System.getenv("ENABLE_GCP") == "true") {
 }
 
 group = 'io.emeraldpay'
-version = '0.12-alpha.4'
+version = '0.12-alpha.5'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -52,9 +52,10 @@ dependencies {
     api "io.grpc:grpc-protobuf:${grpcVersion}"
     api "io.grpc:grpc-stub:${grpcVersion}"
     implementation "io.grpc:grpc-netty:${grpcVersion}"
-    implementation "io.netty:netty-tcnative-boringssl-static:2.0.46.Final"
+    implementation "io.netty:netty-tcnative-boringssl-static:2.0.59.Final"
     implementation "javax.annotation:javax.annotation-api:1.3.2"
     implementation "com.salesforce.servicelibs:reactor-grpc:${reactiveGrpcVersion}"
+    implementation "io.projectreactor:reactor-core:${reactorVersion}"
     api "com.salesforce.servicelibs:reactor-grpc-stub:${reactiveGrpcVersion}"
 
     implementation 'io.emeraldpay.etherjar:etherjar-domain:0.11.0'
@@ -62,6 +63,7 @@ dependencies {
     testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
     testImplementation "org.spockframework:spock-core:${spockVersion}"
     testImplementation "io.grpc:grpc-testing:${grpcVersion}"
+    testImplementation "com.salesforce.servicelibs:reactor-grpc-test:${reactiveGrpcVersion}"
 }
 
 test {
@@ -136,12 +138,12 @@ publishing {
 }
 
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = "0.8.8"
 }
 
 jacocoTestReport {
     reports {
-        xml.enabled true
+        xml.required = true
     }
 }
 
@@ -154,8 +156,8 @@ task coverageReport(type: JacocoReport) {
     classDirectories.setFrom files(subprojects.sourceSets.main.output)
     executionData.setFrom project.fileTree(dir: '.', include: '**/build/jacoco/test.exec')
     reports {
-        xml.enabled true
-        csv.enabled false
-        html.enabled true
+        xml.required = true
+        csv.required = false
+        html.required = true
     }
 }
