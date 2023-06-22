@@ -50,9 +50,31 @@ public enum Chain {
         this.fullname = fullname;
     }
 
+    /**
+     * Get chain by its id. If id is not found, UNSPECIFIED is returned
+     *
+     * @param id chain id
+     * @return chain
+     */
     public static Chain byId(int id) {
         for (Chain chain: Chain.values()) {
             if (chain.id == id) {
+                return chain;
+            }
+        }
+        return UNSPECIFIED;
+    }
+
+    /**
+     * Get chain by code. Code is case-insensitive. If code is not found, UNSPECIFIED is returned
+     *
+     * @param code chain code
+     * @return chain
+     */
+    public static Chain byCode(String code) {
+        code = code.toUpperCase();
+        for (Chain chain: Chain.values()) {
+            if (chain.code.equals(code) || chain.name().equals(code)) {
                 return chain;
             }
         }
