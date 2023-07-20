@@ -49,6 +49,7 @@ public class EmeraldConnection {
         private Integer maxMessageSize = 32 * 1024 * 1024;
 
         private Function<NettyChannelBuilder, ManagedChannelBuilder<?>> customChannel = null;
+        private Channel channel;
 
         /**
          * Set target address as a host and port pair
@@ -58,6 +59,7 @@ public class EmeraldConnection {
          * @return builder
          */
         public Builder connectTo(String host, int port) {
+            this.channel = null;
             this.host = host;
             this.port = port;
             return this;
@@ -72,11 +74,11 @@ public class EmeraldConnection {
         public Builder connectTo(String host) {
             if (host.indexOf(":") > 0) {
                 String[] split = host.split(":");
-                this.connectTo(split[0], Integer.parseInt(split[1]));
+                return this.connectTo(split[0], Integer.parseInt(split[1]));
             } else {
                 this.host = host;
+                return this;
             }
-            return this;
         }
 
         public Builder connectTo(InetAddress host, int port) {
@@ -85,7 +87,19 @@ public class EmeraldConnection {
         }
 
         public Builder connectTo(InetAddress host) {
+            this.channel = null;
             this.host = host.getHostAddress();
+            return this;
+        }
+
+        /**
+         * Use the specified channel to connect to Emerald API. Note that in this case all other configuration options are ignored
+         *
+         * @param channel a channel to use
+         * @return builder
+         */
+        public Builder connectUsing(Channel channel) {
+            this.channel = channel;
             return this;
         }
 
@@ -136,6 +150,10 @@ public class EmeraldConnection {
          * @return Emerald API instance
          */
         public EmeraldConnection build() {
+            if (channel != null) {
+                return new EmeraldConnection(channel);
+            }
+
             initDefaults();
 
             NettyChannelBuilder nettyChannelBuilder = NettyChannelBuilder
