@@ -1,10 +1,11 @@
 package io.emeraldpay.api;
 
-import io.grpc.*;
-import io.grpc.netty.*;
+import io.grpc.Channel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.netty.NettyChannelBuilder;
 
-import java.net.*;
-import java.util.function.*;
+import java.net.InetAddress;
+import java.util.function.Function;
 
 /**
  * A connection configuration to access Emerald APIs

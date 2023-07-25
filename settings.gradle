@@ -1,1 +1,2 @@
-rootProject.name="emerald-api"
+include "emerald-api"
+include "emerald-api-kotlin"
