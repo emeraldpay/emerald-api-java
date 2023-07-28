@@ -1,0 +1,120 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'com.google.protobuf' version "0.9.2"
+    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.1.4" apply false
+    id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
+}
+
+if (System.getenv("ENABLE_GCP") == "true") {
+    apply plugin: "com.google.cloud.artifactregistry.gradle-plugin"
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir '../api-definitions/proto'
+        }
+    }
+}
+
+dependencies {
+    implementation project(":emerald-api")
+
+    api "io.grpc:grpc-protobuf:${grpcVersion}"
+    api "io.grpc:grpc-stub:${grpcVersion}"
+    implementation "io.grpc:grpc-netty:${grpcVersion}"
+    implementation "io.grpc:protoc-gen-grpc-kotlin:${grpcKotlinVersion}"
+    implementation "io.grpc:grpc-kotlin-stub:${grpcKotlinVersion}"
+    implementation "com.google.protobuf:protobuf-java:${protobufVersion}"
+    implementation "com.google.protobuf:protobuf-kotlin:${protobufVersion}"
+    implementation "com.salesforce.servicelibs:reactor-grpc:${reactiveGrpcVersion}"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutinesVersion}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${kotlinCoroutinesVersion}"
+
+}
+
+test {
+    useJUnitPlatform()
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = 'full'
+}
+
+protobuf {
+    protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }
+    plugins {
+        grpckt { artifact = "io.grpc:protoc-gen-grpc-kotlin:${grpcKotlinVersion}:jdk8@jar" }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpckt {}
+        }
+        all()*.builtins {
+            remove java
+            kotlin {}
+        }
+    }
+}
+
+afterEvaluate {
+    publish.dependsOn(compileJava)
+    publish.dependsOn(compileKotlin)
+    publish.dependsOn(generateProto)
+    publishToMavenLocal.dependsOn(generateProto)
+    generateProto.dependsOn(clean)
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+publishing {
+    repositories {
+        maven {
+            url "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven"
+        }
+    }
+
+    publications {
+        EmeraldPublication(MavenPublication) {
+            from components.java
+
+            groupId project.group
+            artifactId project.name
+            version project.version
+            pom {
+                name = 'Emerald Kotlin API'
+                description = 'Emerald API Client (gRPC Stubs and Wrappers for Kotlin)'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = "splix"
+                        name = "Igor Artamonov"
+                    }
+                    developer {
+                        id = "kan"
+                        name = "Ilya Kan"
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/emeraldpay/emerald-java-client.git'
+                    developerConnection = 'scm:git:git@github.com:emeraldpay/emerald-java-client.git'
+                    url = 'https://github.com/emeraldpay/emerald-java-client'
+                }
+            }
+        }
+    }
+}
