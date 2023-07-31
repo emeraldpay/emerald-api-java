@@ -4,9 +4,8 @@ plugins {
     id 'groovy'
     id 'idea'
     id 'maven-publish'
-    id 'com.google.protobuf' version "0.9.2"
+    id 'com.google.protobuf'
     id 'jacoco'
-    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.1.4" apply false
 }
 
 if (System.getenv("ENABLE_GCP") == "true") {
