@@ -26,11 +26,11 @@ jobs:
 
       - name: Find Version
         id: find_version
-        run: echo ::set-output name=VERSION::$(./gradlew properties | grep ^version | awk '{print $2}')
+        run: echo VERSION=$(./gradlew properties | grep ^version | awk '{print $2}') >> $GITHUB_OUTPUT
 
       - name: Check if version is snapshot
         id: find_is_snapshot
-        run: echo ::set-output name=IS_SNAPSHOT::$(echo ${{ steps.find_version.outputs.VERSION }} | grep -qi SNAPSHOT && echo true || echo false)
+        run: echo IS_SNAPSHOT=$(echo ${{ steps.find_version.outputs.VERSION }} | grep -qi SNAPSHOT && echo true || echo false) >> $GITHUB_OUTPUT
 
       - name: Show version
         run: echo ${{ steps.find_version.outputs.VERSION }}
