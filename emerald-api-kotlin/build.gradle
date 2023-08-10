@@ -79,7 +79,13 @@ java {
 publishing {
     repositories {
         maven {
-            url "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven"
+            url "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven" + project.version.with(true) { version ->
+                if (version.toString().endsWith("-SNAPSHOT")) {
+                    "-snapshots"
+                } else {
+                    ""
+                }
+            }
         }
     }
 

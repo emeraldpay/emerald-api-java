@@ -1,0 +1,61 @@
+name: Snapshots
+
+on:
+  push:
+    branches:
+      - master
+      - ci/*
+  pull_request:
+    branches:
+      - ci/*
+
+jobs:
+
+  publish-gcp-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          ref: ${{ github.ref }}
+          submodules: true
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - name: Find Version
+        id: find_version
+        run: echo ::set-output name=VERSION::$(./gradlew properties | grep ^version | awk '{print $2}')
+
+      - name: Check if version is snapshot
+        id: find_is_snapshot
+        run: echo ::set-output name=IS_SNAPSHOT::$(echo ${{ steps.find_version.outputs.VERSION }} | grep -qi SNAPSHOT && echo true || echo false)
+
+      - name: Show version
+        run: echo ${{ steps.find_version.outputs.VERSION }}
+
+      - name: Show is snapshot
+        run: echo ${{ steps.find_is_snapshot.outputs.IS_SNAPSHOT }}
+
+      - name: Check
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: check
+        if: steps.find_is_snapshot.outputs.IS_SNAPSHOT == 'true'
+
+      - name: Setup GCP
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_ARTIFACTS_KEY }}
+          export_default_credentials: true
+        if: steps.find_is_snapshot.outputs.IS_SNAPSHOT == 'true'
+
+      - name: Upload to GCP
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: publish
+        env:
+          ENABLE_GCP: true
+        if: steps.find_is_snapshot.outputs.IS_SNAPSHOT == 'true'
