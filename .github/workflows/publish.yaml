@@ -29,13 +29,22 @@ jobs:
         with:
           arguments: build
 
-      - name: Upload Jars
-        id: upload-release-asset
+      - name: Upload Java Jars
+        id: upload-java-asset
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref }}
-          file: ./build/libs/*.jar
+          file: ./emerald-api/build/libs/*.jar
+          file_glob: true
+
+      - name: Upload Kotlin Jars
+        id: upload-kotlin-asset
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          file: ./emerald-api-kotlin/build/libs/*.jar
           file_glob: true
 
   publish-gcp-artifacts:
