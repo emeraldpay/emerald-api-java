@@ -6,6 +6,7 @@ plugins {
     id 'maven-publish'
     id 'com.google.protobuf'
     id 'jacoco'
+    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.1" apply false
 }
 
 if (System.getenv("ENABLE_GCP") == "true") {
@@ -86,7 +87,13 @@ java {
 publishing {
     repositories {
         maven {
-            url "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven"
+            url "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven" + { version ->
+                if (project.version.toString().endsWith("-SNAPSHOT")) {
+                    "-snapshots"
+                } else {
+                    ""
+                }
+            }.call()
         }
     }
 
