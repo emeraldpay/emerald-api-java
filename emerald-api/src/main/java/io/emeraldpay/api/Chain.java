@@ -38,7 +38,9 @@ public enum Chain {
     // TESTNET_FLOONET(10004, "FLOONET", "Floonet Testnet"),
     TESTNET_GOERLI(10005, "GOERLI", "Goerli Testnet"),
     TESTNET_ROPSTEN(10006, "ROPSTEN", "Ropsten Testnet"),
-    TESTNET_RINKEBY(10007, "RINKEBY", "Rinkeby Testnet");
+    TESTNET_RINKEBY(10007, "RINKEBY", "Rinkeby Testnet"),
+    TESTNET_HOLESKY(10008, "HOLESKY", "Holesky Testnet"),
+    TESTNET_SEPOLIA(10009, "SEPOLIA", "Sepolia Testnet");
 
     private final int id;
     private final String code;
