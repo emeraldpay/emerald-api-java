@@ -15,6 +15,8 @@ public enum BlockchainType {
                 || chain == Chain.TESTNET_GOERLI
                 || chain == Chain.TESTNET_RINKEBY
                 || chain == Chain.TESTNET_ROPSTEN
+                || chain == Chain.TESTNET_HOLESKY
+                || chain == Chain.TESTNET_SEPOLIA
         ) {
             return BlockchainType.ETHEREUM;
         }
