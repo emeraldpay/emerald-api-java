@@ -1,5 +1,5 @@
 = Emerald API for Java
-:lib-version: 0.11.0
+:lib-version: 0.13.0
 
 image:https://github.com/emeraldpay/emerald-java-client/workflows/Tests/badge.svg["Unit Tests"]
 image:https://img.shields.io/github/license/emeraldpay/emerald-java-client.svg?maxAge=2592000["License",link="https://github.com/emeraldpay/emerald-java-client/blob/master/LICENSE"]
