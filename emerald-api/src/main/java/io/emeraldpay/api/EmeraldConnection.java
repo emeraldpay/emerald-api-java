@@ -14,7 +14,7 @@ public class EmeraldConnection {
 
     private final Channel channel;
 
-    private EmeraldConnection(Channel channel) {
+    public EmeraldConnection(Channel channel) {
         this.channel = channel;
     }
 
