@@ -73,10 +73,10 @@ protobuf {
 }
 
 afterEvaluate {
+    publish.dependsOn(clean)
     publish.dependsOn(compileJava)
     publish.dependsOn(generateProto)
     publishToMavenLocal.dependsOn(generateProto)
-    generateProto.dependsOn(clean)
 }
 
 java {
