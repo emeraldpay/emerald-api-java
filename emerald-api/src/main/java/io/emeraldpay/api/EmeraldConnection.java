@@ -1,10 +1,16 @@
 package io.emeraldpay.api;
 
+import io.emeraldpay.api.proto.AuthGrpc;
+import io.emeraldpay.impl.AuthHolder;
+import io.emeraldpay.impl.AuthInterceptor;
+import io.emeraldpay.impl.TokenCredentials;
 import io.grpc.Channel;
+import io.grpc.ClientInterceptor;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.netty.NettyChannelBuilder;
 
 import java.net.InetAddress;
+import java.net.URI;
 import java.util.function.Function;
 
 /**
@@ -13,9 +19,16 @@ import java.util.function.Function;
 public class EmeraldConnection {
 
     private final Channel channel;
+    private final ClientInterceptor credentials;
 
     public EmeraldConnection(Channel channel) {
         this.channel = channel;
+        this.credentials = null;
+    }
+
+    public EmeraldConnection(Channel channel, ClientInterceptor credentials) {
+        this.channel = channel;
+        this.credentials = credentials;
     }
 
     /**
@@ -38,6 +51,22 @@ public class EmeraldConnection {
         return channel;
     }
 
+    /**
+     * Credentials used to authenticate on Emerald API calls
+     * @return credentials
+     */
+    public ClientInterceptor getCredentials() {
+        return credentials;
+    }
+
+    /**
+     * Check if the connection has credentials
+     * @return true if credentials are set
+     */
+    public boolean hasCredentials() {
+        return credentials != null;
+    }
+
     public static class Builder {
         private String host;
         private Integer port;
@@ -50,6 +79,8 @@ public class EmeraldConnection {
         private Integer maxMessageSize = 32 * 1024 * 1024;
 
         private Function<NettyChannelBuilder, ManagedChannelBuilder<?>> customChannel = null;
+
+        private String secretToken;
 
         /**
          * Set target address as a host and port pair
@@ -80,6 +111,18 @@ public class EmeraldConnection {
             return this;
         }
 
+        public Builder connectTo(URI url) {
+            boolean isSecure = "https".equals(url.getScheme());
+            if (isSecure) {
+                this.usePlaintext = false;
+            }
+            int port = url.getPort();
+            if (port == -1) {
+                port = isSecure ? 443 : 80;
+            }
+            return this.connectTo(url.getHost(), port);
+        }
+
         public Builder connectTo(InetAddress host, int port) {
             this.port = port;
             return this.connectTo(host);
@@ -108,6 +151,17 @@ public class EmeraldConnection {
          */
         public Builder maxMessageSize(Integer value) {
             this.maxMessageSize = value;
+            return this;
+        }
+
+        /**
+         * Authenticate on Emerald API using the provided secret token
+         *
+         * @param secret a token like `emrld_y40SYbbZclSZPX4r6nL9hNKUGaknAwqyv2qslI`
+         * @return builder
+         */
+        public Builder withAuthToken(String secret) {
+            this.secretToken = secret;
             return this;
         }
 
@@ -162,7 +216,18 @@ public class EmeraldConnection {
                 channelBuilder.defaultLoadBalancingPolicy("round_robin");
             }
 
-            return new EmeraldConnection(channelBuilder.build());
+            Channel channel = channelBuilder.build();
+
+            AuthInterceptor authInterceptor = null;
+            if (secretToken != null) {
+                if (usePlaintext) {
+                    System.err.println("WARNING: Authentication with a secret token over an unsecure plaintext connection.");
+                }
+                AuthHolder holder = new AuthHolder(new TokenCredentials(secretToken, AuthGrpc.newBlockingStub(channel)));
+                authInterceptor = new AuthInterceptor(holder);
+            }
+
+            return new EmeraldConnection(channel, authInterceptor);
         }
 
 

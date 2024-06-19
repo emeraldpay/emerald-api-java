@@ -47,6 +47,7 @@ dependencies {
     implementation 'io.emeraldpay.etherjar:etherjar-domain:0.11.0'
 
     testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
+    testImplementation 'net.bytebuddy:byte-buddy:1.14.17'
     testImplementation "org.spockframework:spock-core:${spockVersion}"
     testImplementation "io.grpc:grpc-testing:${grpcVersion}"
     testImplementation "com.salesforce.servicelibs:reactor-grpc-test:${reactiveGrpcVersion}"

@@ -10,7 +10,11 @@ public class BlockchainApi {
 
     public BlockchainApi(EmeraldConnection connection) {
         this.connection = connection;
-        this.blockchainStub = ReactorBlockchainGrpc.newReactorStub(connection.getChannel());
+        ReactorBlockchainGrpc.ReactorBlockchainStub stub = ReactorBlockchainGrpc.newReactorStub(connection.getChannel());
+        if (connection.hasCredentials()) {
+            stub = stub.withInterceptors(connection.getCredentials());
+        }
+        this.blockchainStub = stub;
     }
 
     /**
