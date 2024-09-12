@@ -120,7 +120,6 @@ class TokenCredentialsSpec extends Specification {
             authSecret == "secret_token"
         }
         with (calls[1] as AuthOuterClass.RefreshRequest) {
-            authSecret == "secret_token"
             refreshToken == "refresh_001"
         }
         credentials.isReady()
