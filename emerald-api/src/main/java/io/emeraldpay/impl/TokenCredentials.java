@@ -71,7 +71,6 @@ public class TokenCredentials implements MetadataHandler {
     public void refreshSync() {
         AuthOuterClass.AuthResponse response = authStub.refresh(
                 AuthOuterClass.RefreshRequest.newBuilder()
-                        .setAuthSecret(token)
                         .setRefreshToken(jwt.getRefreshToken())
                         .build()
         );
