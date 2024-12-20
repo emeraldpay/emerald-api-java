@@ -6,11 +6,7 @@ plugins {
     id 'maven-publish'
     id 'com.google.protobuf'
     id 'jacoco'
-    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.1" apply false
-}
-
-if (System.getenv("ENABLE_GCP") == "true") {
-    apply plugin: "com.google.cloud.artifactregistry.gradle-plugin"
+    id "com.google.cloud.artifactregistry.gradle-plugin"
 }
 
 java {
