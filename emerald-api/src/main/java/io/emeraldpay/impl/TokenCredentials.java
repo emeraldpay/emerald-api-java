@@ -137,10 +137,15 @@ public class TokenCredentials implements MetadataHandler {
     @Override
     public void request(AuthHolder caller) {
         executor.submit(() -> {
-            if (jwt == null) {
-                authSync();
-            } else {
-                refreshSync();
+            try {
+                if (jwt == null) {
+                    authSync();
+                } else {
+                    refreshSync();
+                }
+            } catch (Exception e) {
+                System.err.println("Error during the authentication: " + e.getMessage());
+                return;
             }
             caller.setAuth(this);
         });

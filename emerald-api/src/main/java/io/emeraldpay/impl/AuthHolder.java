@@ -86,7 +86,12 @@ public class AuthHolder {
             this.auth = auth;
             if (auth.isReady()) {
                 for (Consumer<MetadataHandler> listener : authQueue) {
-                    listener.accept(auth);
+                    try {
+                        listener.accept(auth);
+                    } catch (Exception e) {
+                        System.err.println("Error in auth listener: " + e.getMessage());
+                        // ignore any exceptions in the listener, it should not block the auth update
+                    }
                 }
                 authQueue.clear();
             }
