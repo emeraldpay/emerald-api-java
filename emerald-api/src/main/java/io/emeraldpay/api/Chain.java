@@ -20,27 +20,36 @@ public enum Chain {
     UNSPECIFIED(0, "UNSPECIFIED", "Unknown"),
 
     BITCOIN(1, "BTC", "Bitcoin"),
-    // GRIN(2, "GRIN", "Grin"),
 
     // Networks with tokens
     ETHEREUM(100, "ETH", "Ethereum"),
     ETHEREUM_CLASSIC(101, "ETC", "Ethereum Classic"),
     FANTOM(102, "FTM", "Fantom"),
 
-    //LIGHTNING(1001, "BTC_LN", "Bitcoin Lightning"),
     MATIC(1002, "MATIC", "Polygon Matic"),
     RSK(1003, "RSK", "Bitcoin RSK"),
 
-    // Testnets
+    // ---- Testnets
+
+    /// @deprecated
     TESTNET_MORDEN(10001, "MORDEN", "Morden Testnet"),
+    /// @deprecated
     TESTNET_KOVAN(10002, "KOVAN", "Kovan Testnet"),
-    TESTNET_BITCOIN(10003, "TESTNET_BITCOIN", "Bitcoin Testnet"),
-    // TESTNET_FLOONET(10004, "FLOONET", "Floonet Testnet"),
+    ///  @deprecated use TESTNET_BITCOIN_V4 instead
+    TESTNET_BITCOIN(10003, "TESTNET_BITCOIN", "Bitcoin Testnet V3"),
+    /// See https://bips.dev/94/
+    TESTNET_BITCOIN_V4(10004, "TESTNET_BITCOIN_V4", "Bitcoin Testnet V4"),
+    /// @deprecated
     TESTNET_GOERLI(10005, "GOERLI", "Goerli Testnet"),
+    /// @deprecated
     TESTNET_ROPSTEN(10006, "ROPSTEN", "Ropsten Testnet"),
+    /// @deprecated
     TESTNET_RINKEBY(10007, "RINKEBY", "Rinkeby Testnet"),
+    /// @deprecated
     TESTNET_HOLESKY(10008, "HOLESKY", "Holesky Testnet"),
-    TESTNET_SEPOLIA(10009, "SEPOLIA", "Sepolia Testnet");
+    TESTNET_SEPOLIA(10009, "SEPOLIA", "Sepolia Testnet"),
+    TESTNET_HOODI(10010, "HOODI", "Sepolia Testnet"),
+    ;
 
     private final int id;
     private final String code;

@@ -10,8 +10,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -40,12 +40,13 @@ dependencies {
     implementation "io.projectreactor:reactor-core:${reactorVersion}"
     api "com.salesforce.servicelibs:reactor-grpc-stub:${reactiveGrpcVersion}"
 
-    implementation 'io.emeraldpay.etherjar:etherjar-domain:0.11.0'
+    implementation 'io.emeraldpay.etherjar:etherjar-domain:0.13.0'
 
-    testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
-    testImplementation 'net.bytebuddy:byte-buddy:1.14.17'
+    testImplementation "org.apache.groovy:groovy:${groovyVersion}"
+    testImplementation 'net.bytebuddy:byte-buddy:1.17.7'
     testImplementation "org.spockframework:spock-core:${spockVersion}"
     testImplementation "io.grpc:grpc-testing:${grpcVersion}"
+    testImplementation "io.grpc:grpc-inprocess:${grpcVersion}"
     testImplementation "com.salesforce.servicelibs:reactor-grpc-test:${reactiveGrpcVersion}"
 }
 
@@ -127,7 +128,7 @@ publishing {
 }
 
 jacoco {
-    toolVersion = "0.8.8"
+    toolVersion = "0.8.13"
 }
 
 jacocoTestReport {

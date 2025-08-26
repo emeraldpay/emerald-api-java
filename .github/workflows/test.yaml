@@ -27,7 +27,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 11
+          java-version: 17
 
       - name: Check
         uses: eskatos/gradle-command-action@v1
@@ -47,10 +47,10 @@ jobs:
   # Make sure it works with all standard JVMs on main OSes
   platform-test:
     name: Java ${{ matrix.java }}
-    continue-on-error: ${{ matrix.java != '11' && matrix.java != '8' }}
+    continue-on-error: ${{ matrix.java != '17' && matrix.java != '21' }}
     strategy:
       matrix:
-        java: [ "8", "11", "12", "13", "14", "15", "16", "17" ]
+        java: [ "17", "18", "19", "20", "21", "22", "23" ]
 
     runs-on: ubuntu-latest
     steps:

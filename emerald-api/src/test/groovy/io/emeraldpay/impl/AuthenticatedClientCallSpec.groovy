@@ -4,7 +4,6 @@ import io.grpc.ClientCall
 import io.grpc.ManagedChannel
 import io.grpc.Metadata
 import io.grpc.inprocess.InProcessChannelBuilder
-import io.grpc.internal.NoopClientCall
 import io.grpc.testing.GrpcCleanupRule
 import spock.lang.Specification
 
@@ -26,7 +25,7 @@ class AuthenticatedClientCallSpec extends Specification {
     def "Adds headers"() {
         setup:
         def handler = Mock(MetadataHandler.class)
-        def call = new AuthenticatedClientCall(new NoopClientCall(), handler)
+        def call = new AuthenticatedClientCall(Mock(ClientCall.class), handler)
         def meta = new Metadata()
 
         when:

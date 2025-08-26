@@ -17,12 +17,14 @@ public enum BlockchainType {
                 || chain == Chain.TESTNET_ROPSTEN
                 || chain == Chain.TESTNET_HOLESKY
                 || chain == Chain.TESTNET_SEPOLIA
+                || chain == Chain.TESTNET_HOODI
         ) {
             return BlockchainType.ETHEREUM;
         }
 
         if (chain == Chain.BITCOIN
                 || chain == Chain.TESTNET_BITCOIN
+                || chain == Chain.TESTNET_BITCOIN_V4
         ) {
             return BlockchainType.BITCOIN;
         }
