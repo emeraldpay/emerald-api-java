@@ -39,14 +39,23 @@ public class TokenCredentials implements MetadataHandler {
      * Blocking call to authenticate and get a JWT token
      */
     public void authSync() {
-        AuthOuterClass.AuthResponse response = authStub.authenticate(
-                AuthOuterClass.AuthRequest.newBuilder()
-                        //TODO module version
-                        .addAgentDetails("emerald-client-java/0.14.0")
-                        .setAuthSecret(token)
-                        .addCapabilities("JWT_RS256")
-                        .build()
-        );
+        AuthOuterClass.AuthResponse response;
+        try {
+            response = authStub.authenticate(
+                    AuthOuterClass.AuthRequest.newBuilder()
+                            //TODO module version
+                            .addAgentDetails("emerald-client-java/0.14.0")
+                            .setAuthSecret(token)
+                            .addCapabilities("JWT_RS256")
+                            .build()
+            );
+        } catch (IllegalAccessError e) {
+            // This happens when the gRPC classes are not compatible. Print the stack trace for easier debugging.
+            e.printStackTrace();
+            throw new RuntimeException("Classpath Misconfiguration", e);
+        } catch (Throwable t) {
+            throw new RuntimeException("Failed to authenticate", t);
+        }
         if (response.getStatus() != 0) {
             throw new RuntimeException("Failed to authenticate: code=" + response.getStatus() + ", message=" + response.getDenyMessage());
         }
