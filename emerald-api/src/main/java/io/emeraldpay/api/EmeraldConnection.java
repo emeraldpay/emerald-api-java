@@ -72,6 +72,8 @@ public class EmeraldConnection {
         private Integer port;
         private boolean usePlaintext = false;
         private boolean useLoadBalancing = true;
+        private boolean autoConnect = false;
+        private boolean waitForAuth = false;
 
         /**
          * Default Netty config allows messages up to 4Mb, but in practice Ethereum RPC responses may be larger. Here it allows up to 32Mb by default.
@@ -144,6 +146,27 @@ public class EmeraldConnection {
         }
 
         /**
+         * Automatically authenticate on Emerald API when the connection is built.
+         * By default, it authenticates on the first request, which may cause delays.
+         *
+         * @return builder
+         */
+        public Builder withAutoConnect() {
+            this.autoConnect = true;
+            return this;
+        }
+
+        /**
+         * When auto-connect is enabled, wait for authentication to complete before returning the EmeraldConnection instance.
+         *
+         * @return builder
+         */
+        public Builder withWaitingForAuth() {
+            this.waitForAuth = true;
+            return this;
+        }
+
+        /**
          * St max inbound message size. Default is 32mb.
          *
          * @param value max message size. Set as null to use Netty default config
@@ -186,6 +209,24 @@ public class EmeraldConnection {
         }
 
         /**
+         * Setup the credentials instance
+         *
+         * @param channel the existing channel to use for authentication
+         * @return credentials instance
+         */
+        protected TokenCredentials getOrCreateCredentials(Channel channel) {
+            TokenCredentials result = new TokenCredentials(secretToken, AuthGrpc.newBlockingStub(channel));
+            if (autoConnect) {
+                if (waitForAuth) {
+                    result.authSync();
+                } else {
+                    result.authAsync();
+                }
+            }
+            return result;
+        }
+
+        /**
          * Build the API instance
          *
          * @return Emerald API instance
@@ -223,7 +264,7 @@ public class EmeraldConnection {
                 if (usePlaintext) {
                     System.err.println("WARNING: Authentication with a secret token over an unsecure plaintext connection.");
                 }
-                AuthHolder holder = new AuthHolder(new TokenCredentials(secretToken, AuthGrpc.newBlockingStub(channel)));
+                AuthHolder holder = new AuthHolder(getOrCreateCredentials(channel));
                 authInterceptor = new AuthInterceptor(holder);
             }
 
