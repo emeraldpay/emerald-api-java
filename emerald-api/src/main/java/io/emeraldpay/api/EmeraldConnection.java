@@ -72,8 +72,8 @@ public class EmeraldConnection {
         private Integer port;
         private boolean usePlaintext = false;
         private boolean useLoadBalancing = true;
-        private boolean autoConnect = false;
-        private boolean waitForAuth = false;
+        private EmeraldCredentials.Builder credentials = EmeraldCredentials.newBuilder();
+        private AuthInterceptor providedCredentials = null;
 
         /**
          * Default Netty config allows messages up to 4Mb, but in practice Ethereum RPC responses may be larger. Here it allows up to 32Mb by default.
@@ -81,8 +81,6 @@ public class EmeraldConnection {
         private Integer maxMessageSize = 32 * 1024 * 1024;
 
         private Function<NettyChannelBuilder, ManagedChannelBuilder<?>> customChannel = null;
-
-        private String secretToken;
 
         /**
          * Set target address as a host and port pair
@@ -152,7 +150,10 @@ public class EmeraldConnection {
          * @return builder
          */
         public Builder withAutoConnect() {
-            this.autoConnect = true;
+            if (providedCredentials != null) {
+                throw new IllegalStateException("Cannot set configure credentials builder when credentials are already provided");
+            }
+            this.credentials = this.credentials.withAutoConnect();
             return this;
         }
 
@@ -162,7 +163,10 @@ public class EmeraldConnection {
          * @return builder
          */
         public Builder withWaitingForAuth() {
-            this.waitForAuth = true;
+            if (providedCredentials != null) {
+                throw new IllegalStateException("Cannot set configure credentials builder when credentials are already provided");
+            }
+            this.credentials = this.credentials.withWaitingForAuth();
             return this;
         }
 
@@ -184,7 +188,38 @@ public class EmeraldConnection {
          * @return builder
          */
         public Builder withAuthToken(String secret) {
-            this.secretToken = secret;
+            if (providedCredentials != null) {
+                throw new IllegalStateException("Cannot set auth token when credentials are already provided");
+            }
+            this.credentials = this.credentials.withAuthToken(secret);
+            return this;
+        }
+
+        /**
+         * Provided credentials builder.
+         * Replaces the existing credentials builder or previously configured credentials.
+         *
+         * @param credentials credentials builder to use for authentication
+         * @return builder
+         */
+        public Builder withCredentials(EmeraldCredentials.Builder credentials) {
+            if (credentials == null) {
+                throw new IllegalArgumentException("Credentials builder cannot be null");
+            }
+            this.credentials = credentials;
+            this.providedCredentials = null;
+            return this;
+        }
+
+        /**
+         * Set an existing credentials interceptor to use for authentication, instead of building new ones from the credentials builder.
+         * Can be set to null to use the credentials builder instead.
+         *
+         * @param credentials credentials interceptor to use for authentication
+         * @return builder
+         */
+        public Builder withCredentials(AuthInterceptor credentials) {
+            this.providedCredentials = credentials;
             return this;
         }
 
@@ -206,24 +241,6 @@ public class EmeraldConnection {
             if (port == null) {
                 port = 443;
             }
-        }
-
-        /**
-         * Setup the credentials instance
-         *
-         * @param channel the existing channel to use for authentication
-         * @return credentials instance
-         */
-        protected TokenCredentials getOrCreateCredentials(Channel channel) {
-            TokenCredentials result = new TokenCredentials(secretToken, AuthGrpc.newBlockingStub(channel));
-            if (autoConnect) {
-                if (waitForAuth) {
-                    result.authSync();
-                } else {
-                    result.authAsync();
-                }
-            }
-            return result;
         }
 
         /**
@@ -258,14 +275,14 @@ public class EmeraldConnection {
             }
 
             Channel channel = channelBuilder.build();
-
-            AuthInterceptor authInterceptor = null;
-            if (secretToken != null) {
-                if (usePlaintext) {
-                    System.err.println("WARNING: Authentication with a secret token over an unsecure plaintext connection.");
+            AuthInterceptor authInterceptor = providedCredentials;
+            if (authInterceptor == null) {
+                if (credentials.hasToken()) {
+                    if (usePlaintext) {
+                        System.err.println("WARNING: Authentication with a secret token over an unsecure plaintext connection.");
+                    }
                 }
-                AuthHolder holder = new AuthHolder(getOrCreateCredentials(channel));
-                authInterceptor = new AuthInterceptor(holder);
+                authInterceptor = credentials.build(channel);
             }
 
             return new EmeraldConnection(channel, authInterceptor);
