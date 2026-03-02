@@ -15,6 +15,8 @@
  */
 package io.emeraldpay.api;
 
+import io.emeraldpay.api.proto.Common;
+
 public enum Chain {
 
     UNSPECIFIED(0, "UNSPECIFIED", "Unknown"),
@@ -102,5 +104,9 @@ public enum Chain {
 
     public String getChainName() {
         return fullname;
+    }
+
+    public Common.ChainRef asChainRef() {
+        return Common.ChainRef.forNumber(id);
     }
 }
