@@ -75,7 +75,7 @@ java {
 publishing {
     repositories {
         maven {
-            url "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven" + { version ->
+            url = "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven" + { version ->
                 if (project.version.toString().endsWith("-SNAPSHOT")) {
                     "-snapshots"
                 } else {
@@ -89,9 +89,9 @@ publishing {
         EmeraldPublication(MavenPublication) {
             from components.java
 
-            groupId project.group
-            artifactId project.name
-            version project.version
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
             pom {
                 name = 'Emerald Kotlin API'
                 description = 'Emerald API Client (gRPC Stubs and Wrappers for Kotlin)'

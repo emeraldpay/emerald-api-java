@@ -17,9 +17,9 @@ java {
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url "https://repo.spring.io/snapshot" }
-    maven { url "https://repo.spring.io/milestone" }
-    maven { url "https://maven.emrld.io" }
+    maven { url = "https://repo.spring.io/snapshot" }
+    maven { url = "https://repo.spring.io/milestone" }
+    maven { url = "https://maven.emrld.io" }
 }
 
 sourceSets {
@@ -48,6 +48,8 @@ dependencies {
     testImplementation "io.grpc:grpc-testing:${grpcVersion}"
     testImplementation "io.grpc:grpc-inprocess:${grpcVersion}"
     testImplementation "com.salesforce.servicelibs:reactor-grpc-test:${reactiveGrpcVersion}"
+    // Since Gradle 9 the JUnit Platform launcher must be declared explicitly; the version is aligned by the JUnit BOM which comes from Spock
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
 test {
@@ -85,7 +87,7 @@ java {
 publishing {
     repositories {
         maven {
-            url "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven" + { version ->
+            url = "artifactregistry://us-maven.pkg.dev/emeraldpay-prod/maven" + { version ->
                 if (project.version.toString().endsWith("-SNAPSHOT")) {
                     "-snapshots"
                 } else {
@@ -99,9 +101,9 @@ publishing {
         EmeraldPublication(MavenPublication) {
             from components.java
 
-            groupId project.group
-            artifactId project.name
-            version project.version
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
             pom {
                 name = 'Emerald API'
                 description = 'Emerald API Client (gRPC Stubs and Wrappers for Java 11+)'
@@ -128,7 +130,7 @@ publishing {
 }
 
 jacoco {
-    toolVersion = "0.8.13"
+    toolVersion = "0.8.15"
 }
 
 jacocoTestReport {
