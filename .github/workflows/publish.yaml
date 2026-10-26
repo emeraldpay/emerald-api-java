@@ -65,12 +65,12 @@ jobs:
         with:
           arguments: check
 
-      - name: Setup GCP
-        uses: google-github-actions/setup-gcloud@v0
+      # Exports GOOGLE_APPLICATION_CREDENTIALS, which the Artifact Registry Gradle plugin picks up (no gcloud CLI needed)
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v3
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_ARTIFACTS_KEY }}
-          export_default_credentials: true
+          credentials_json: ${{ secrets.GCP_ARTIFACTS_KEY }}
 
       - name: Upload to GCP
         uses: eskatos/gradle-command-action@v1
