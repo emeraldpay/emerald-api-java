@@ -3,7 +3,12 @@ plugins {
     id 'maven-publish'
     id 'com.google.protobuf'
     id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
-    id "com.google.cloud.artifactregistry.gradle-plugin"
+}
+
+// The Artifact Registry plugin fetches GCP credentials (via gcloud or Application Default Credentials) as soon as it's applied,
+// and since v2.2.x it fails the whole build when gcloud is installed but not authenticated (ex. on GitHub runners).
+if (System.getenv("ENABLE_GCP") == "true") {
+    apply plugin: "com.google.cloud.artifactregistry.gradle-plugin"
 }
 
 java {
